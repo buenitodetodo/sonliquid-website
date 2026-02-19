@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonliquid — Clean Water for Sonora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --deep:#0b3d5c;--mid:#1a6fa0;--light:#4db8e8;--pale:#d4eef9;--ghost:#eef7fc;
+      --amber:#c88a2e;--amber-lt:#f5dfa8;--amber-dk:#8a6010;--amber-pale:#fdf8ed;
+      --white:#fff;--off:#f8f9fa;--text:#1a2a3a;--text2:#4a5a6a;
+      --green:#2d9f6f;--green-lt:#e6f5ee;
+      --r:12px;--rl:20px;--rx:40px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Outfit',sans-serif;color:var(--text);background:var(--white);line-height:1.6;overflow-x:hidden}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    section{padding:100px 0}
+    .stag{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mid);margin-bottom:16px}
+    .stag::before{content:'';width:32px;height:2px;background:var(--light);border-radius:2px}
+    h1,h2,h3,h4{font-family:'Source Serif 4',serif;line-height:1.2}
+
+    header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 0;transition:.4s}
+    header.scrolled{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);box-shadow:0 2px 30px rgba(11,61,92,.08);padding:12px 0}
+    header .container{display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--white);transition:color .4s}
+    header.scrolled .logo{color:var(--deep)}
+    .logo-ic{width:40px;height:40px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+    .logo-tx{font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:700}
+    nav{display:flex;align-items:center;gap:28px}
+    nav a{text-decoration:none;color:rgba(255,255,255,.85);font-size:.9rem;font-weight:500;transition:color .3s}
+    header.scrolled nav a{color:var(--text2)}header.scrolled nav a:hover{color:var(--deep)}
+    .nav-cta{padding:10px 24px!important;background:var(--light);color:var(--white)!important;border-radius:var(--rx);font-weight:600!important}
+
+    .hero{min-height:100vh;display:flex;align-items:center;position:relative;background:linear-gradient(165deg,var(--deep) 0%,#0e4a6f 40%,var(--mid) 100%);overflow:hidden;padding-top:80px}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(77,184,232,.15) 0%,transparent 60%)}
+    .rp{position:absolute;border-radius:50%;border:1px solid rgba(77,184,232,.12);animation:rp 8s ease-out infinite}
+    .rp:nth-child(1){width:600px;height:600px;bottom:-200px;left:-100px}
+    .rp:nth-child(2){width:400px;height:400px;bottom:-100px;left:0;animation-delay:2s}
+    .rp:nth-child(3){width:500px;height:500px;top:-150px;right:-100px;animation-delay:4s}
+    @keyframes rp{0%{transform:scale(.8);opacity:0}50%{opacity:1}100%{transform:scale(1.6);opacity:0}}
+    .hero .container{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .hero-content h1{font-size:clamp(2.5rem,5vw,3.8rem);color:var(--white);margin-bottom:24px;line-height:1.1}
+    .hero-content h1 .hl{background:linear-gradient(135deg,var(--light),var(--amber-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-content>p{font-size:1.15rem;color:rgba(255,255,255,.8);max-width:500px;margin-bottom:40px;line-height:1.7}
+    .hb{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+    .hb span{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);padding:8px 16px;border-radius:var(--rx);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:.82rem;font-weight:500}
+    .ha{display:flex;gap:16px;flex-wrap:wrap}
+    .btn-p{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;background:var(--amber);color:var(--white);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,138,46,.4);background:var(--amber-dk)}
+    .btn-o{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border:2px solid rgba(255,255,255,.3);color:var(--white);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .btn-o:hover{border-color:var(--white);background:rgba(255,255,255,.1)}
+
+    .hero-visual{position:relative;display:flex;justify-content:center}
+    .kit-box{width:320px;background:rgba(255,255,255,.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:var(--rl);padding:28px;position:relative}
+    .kit-box h3{color:rgba(255,255,255,.6);font-size:.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:20px;font-family:'Outfit',sans-serif}
+    .ki{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r);font-size:.85rem;font-weight:500;color:var(--white);margin-bottom:8px;transition:transform .3s}
+    .ki:hover{transform:translateX(4px)}
+    .ki .ic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .ki strong{display:block;font-size:.88rem}.ki small{font-size:.72rem;opacity:.6}
+    .ki1{background:rgba(77,184,232,.12)}.ki1 .ic{background:rgba(77,184,232,.2)}
+    .ki2{background:rgba(200,138,46,.15);border:1px solid rgba(200,138,46,.2)}.ki2 .ic{background:rgba(200,138,46,.25)}
+    .ki3{background:rgba(255,255,255,.08)}.ki3 .ic{background:rgba(255,255,255,.12)}
+    .kit-bdg{position:absolute;bottom:-16px;right:-16px;background:var(--white);padding:14px 18px;border-radius:var(--r);box-shadow:0 12px 40px rgba(0,0,0,.15);animation:fb 5s ease-in-out infinite}
+    .kit-bdg strong{display:block;font-size:1.3rem;color:var(--amber-dk);font-family:'Source Serif 4',serif}
+    .kit-bdg span{font-size:.7rem;color:var(--text2)}
+    @keyframes fb{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+    .problem{background:var(--white)}
+    .problem .container{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .problem h2{font-size:clamp(2rem,3.5vw,2.8rem);margin-bottom:24px;color:var(--deep)}
+    .problem p{color:var(--text2);font-size:1.05rem;line-height:1.8;margin-bottom:16px}
+    .sr{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+    .sb{text-align:center;padding:24px 12px;background:var(--ghost);border-radius:var(--r)}
+    .sb .n{font-family:'Source Serif 4',serif;font-size:2rem;font-weight:700;color:var(--deep)}
+    .sb .l{font-size:.78rem;color:var(--text2);margin-top:4px;font-weight:500}
+    .qc{background:linear-gradient(135deg,var(--deep),var(--mid));border-radius:var(--rl);padding:44px;color:var(--white);position:relative;overflow:hidden}
+    .qc::before{content:'"';position:absolute;top:-20px;left:20px;font-size:12rem;font-family:'Source Serif 4',serif;opacity:.08;line-height:1}
+    .qc blockquote{font-family:'Source Serif 4',serif;font-size:1.25rem;font-style:italic;line-height:1.6;margin-bottom:20px;position:relative;z-index:1}
+    .qc cite{font-style:normal;font-family:'Outfit',sans-serif;font-size:.85rem;opacity:.8}
+
+    .process{background:var(--ghost)}
+    .process .sh{text-align:center;max-width:650px;margin:0 auto 60px}
+    .process .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .process .sh p{color:var(--text2);font-size:1.05rem}
+    .phases{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
+    .pc{border-radius:var(--rl);padding:32px 24px}
+    .pc.p1{background:var(--white);border:2px solid var(--pale)}
+    .pc.p2{background:linear-gradient(145deg,var(--amber-pale),#fcecd5);border:2px solid var(--amber-lt)}
+    .pt{display:inline-block;padding:4px 14px;border-radius:var(--rx);font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+    .p1 .pt{background:var(--pale);color:var(--mid)}
+    .p2 .pt{background:var(--amber-lt);color:var(--amber-dk)}
+    .pc h3{font-size:1.2rem;margin-bottom:10px}.pc>p{color:var(--text2);font-size:.88rem;line-height:1.7;margin-bottom:18px}
+    .sl{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .sl li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.03);font-size:.84rem;color:var(--text);font-weight:500;transition:transform .2s}
+    .sl li:hover{transform:translateX(4px)}
+    .sl .sd{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;font-weight:700;color:var(--white)}
+    .p1 .sd{background:var(--mid)}.p2 .sd{background:var(--amber)}
+    .sl small{display:block;font-weight:400;font-size:.73rem;color:var(--text2)}
+    .rb{background:var(--green);color:var(--white);text-align:center;padding:24px;border-radius:var(--rl);font-weight:600}
+    .rb .big{font-size:1.5rem;display:block;margin-bottom:4px}
+
+    .science{background:var(--white)}
+    .science .sh{text-align:center;max-width:650px;margin:0 auto 60px}
+    .science .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .science .sh p{color:var(--text2);font-size:1.05rem}
+    .dg{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+    .dc{border-radius:var(--rl);padding:40px;border:1px solid rgba(0,0,0,.06)}
+    .dc.dc1{background:var(--ghost)}
+    .dc.dc2{background:var(--amber-pale)}
+    .dc .di{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:20px}
+    .dc1 .di{background:rgba(77,184,232,.12)}.dc2 .di{background:rgba(200,138,46,.12)}
+    .dc h3{font-size:1.3rem;margin-bottom:12px}.dc>p{color:var(--text2);font-size:.93rem;line-height:1.7;margin-bottom:16px}
+    .df{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .df li{display:flex;align-items:center;gap:8px;font-size:.87rem;color:var(--text);font-weight:500}
+    .df li::before{content:'✓';width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+    .dc1 .df li::before{background:rgba(77,184,232,.12);color:var(--mid)}
+    .dc2 .df li::before{background:rgba(200,138,46,.12);color:var(--amber)}
+
+    .impact{background:linear-gradient(165deg,var(--deep),#0e4a6f);color:var(--white);text-align:center}
+    .impact .stag{color:var(--light)}.impact .stag::before{background:var(--light)}
+    .impact h2{font-size:clamp(2rem,3.5vw,2.8rem);margin-bottom:16px}
+    .impact>.container>p{color:rgba(255,255,255,.75);max-width:600px;margin:0 auto 60px;font-size:1.05rem}
+    .ig{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    .ic2{padding:32px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--rl);backdrop-filter:blur(8px);transition:.3s}
+    .ic2:hover{background:rgba(255,255,255,.1);transform:translateY(-4px)}
+    .ic2 .em{font-size:1.8rem;margin-bottom:12px}.ic2 h3{font-size:1.8rem;margin-bottom:4px}.ic2 span{font-size:.8rem;color:rgba(255,255,255,.7);font-weight:500}
+
+    .team{background:var(--off)}.team .sh{text-align:center;max-width:600px;margin:0 auto 48px}
+    .team .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .team .sh p{color:var(--text2);font-size:1.05rem}
+    .tc{max-width:780px;margin:0 auto;text-align:center}
+    .tc p{color:var(--text2);font-size:1.05rem;line-height:1.8;margin-bottom:16px}
+    .badge2{display:inline-flex;align-items:center;gap:12px;background:var(--white);padding:16px 32px;border-radius:var(--rx);box-shadow:0 4px 20px rgba(0,0,0,.04);margin-top:20px}
+    .badge2 .bi{width:44px;height:44px;background:var(--ghost);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--mid)}
+    .badge2 .bt{text-align:left}.badge2 .bt strong{display:block;font-size:.95rem}.badge2 .bt span{font-size:.8rem;color:var(--text2)}
+
+    .cta{background:var(--white);text-align:center}
+    .cc{background:linear-gradient(135deg,var(--ghost),var(--white));border:2px solid var(--pale);border-radius:var(--rx);padding:80px 60px;max-width:800px;margin:0 auto}
+    .cc h2{font-size:clamp(1.8rem,3vw,2.4rem);color:var(--deep);margin-bottom:16px}
+    .cc p{color:var(--text2);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+    .cb{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .bs{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:var(--mid);color:var(--white);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .bs:hover{background:var(--deep);transform:translateY(-2px)}
+    .bg{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;border:2px solid var(--mid);color:var(--mid);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .bg:hover{background:var(--mid);color:var(--white)}
+
+    footer{background:var(--deep);color:rgba(255,255,255,.7);padding:60px 0 32px}
+    .fg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:48px}
+    .fb .logo{color:var(--white);margin-bottom:16px}.fb p{font-size:.92rem;line-height:1.7;max-width:340px}
+    .fc h5{color:var(--white);font-size:.85rem;font-weight:600;margin-bottom:18px;letter-spacing:1px;text-transform:uppercase}
+    .fc a{display:block;color:rgba(255,255,255,.5);text-decoration:none;font-size:.88rem;padding:5px 0;transition:color .3s}.fc a:hover{color:var(--light)}
+    .fbot{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;font-size:.82rem}
+
+    .fu{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}.fu.v{opacity:1;transform:translateY(0)}
+
+    @media(max-width:1024px){.hero .container,.problem .container{grid-template-columns:1fr;text-align:center}.hero-content>p{margin:0 auto 40px}.hb,.ha{justify-content:center}.hero-visual{margin-top:40px}.phases,.dg{grid-template-columns:1fr}.ig{grid-template-columns:repeat(2,1fr)}.fg{grid-template-columns:1fr;gap:32px}}
+    @media(max-width:768px){section{padding:70px 0}nav a:not(.nav-cta){display:none}.hero{min-height:auto;padding:120px 0 80px}.sr{gap:8px}.kit-box{width:100%;max-width:320px}.cc{padding:48px 24px}.fbot{flex-direction:column;gap:10px;text-align:center}}
+    @media(max-width:480px){.sr,.ig{grid-template-columns:1fr}.hb,.ha{flex-direction:column;align-items:center}}
+  </style>
+</head>
+<body>
+<header id="header">
+  <div class="container">
+    <a href="#" class="logo"><div class="logo-ic">💧</div><span class="logo-tx">Sonliquid</span></a>
+    <nav>
+      <a href="#problem">The Problem</a>
+      <a href="#process">Process</a>
+      <a href="#science">Science</a>
+      <a href="#impact">Impact</a>
+      <a href="#contact" class="nav-cta">Get Involved</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="rp"></div><div class="rp"></div><div class="rp"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hb"><span>🎓 Student-Led</span><span>🌵 Made in Sonora</span><span>🚫 Zero Plastic</span></div>
+      <h1>Clean Water from <span class="hl">Sunlight</span></h1>
+      <p>Sonliquid is a student-built water purification kit for Sonora's drought zones. Natural filtration and solar pasteurization in a glass jar — simple, plastic-free, and powered by the sun.</p>
+      <div class="ha">
+        <a href="#process" class="btn-p">See Our Process ↓</a>
+        <a href="#contact" class="btn-o">Support Us</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="kit-box">
+        <h3>The Sonliquid Kit</h3>
+        <div class="ki ki1"><div class="ic">🪨</div><div><strong>Natural Filter Unit</strong><small>Stones · Gravel · Charcoal · Sand · Cotton</small></div></div>
+        <div class="ki ki2"><div class="ic">🫙</div><div><strong>Glass Jar + Reflector</strong><small>Solar pasteurizer + UV disinfection</small></div></div>
+        <div class="ki ki3"><div class="ic">📋</div><div><strong>Instruction Card</strong><small>Visual step-by-step guide</small></div></div>
+        <div class="kit-bdg"><strong>3 Pieces</strong><span>Complete System</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="fu">
+      <span class="stag">The Problem</span>
+      <h2>Sonora Is Running Out of Clean Water</h2>
+      <p>Sonora is one of Mexico's driest states. Rural communities lack reliable access to safe drinking water. Drought worsens every year, and infrastructure is too expensive to reach everyone.</p>
+      <p>We needed a solution that's affordable, requires no electricity, and uses local materials. So we created one.</p>
+      <div class="sr">
+        <div class="sb"><div class="n">72</div><div class="l">Municipalities</div></div>
+        <div class="sb"><div class="n">40%</div><div class="l">Water Scarcity</div></div>
+        <div class="sb"><div class="n">45°C</div><div class="l">Summer Heat</div></div>
+      </div>
+    </div>
+    <div class="fu">
+      <div class="qc">
+        <blockquote>The desert gives us scorching heat and scarce water — but we realized we could use one to fix the other.</blockquote>
+        <cite>— The Sonliquid Team</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="container">
+    <div class="sh fu">
+      <span class="stag">The Process</span>
+      <h2>Two Phases: Filter, Then Pasteurize</h2>
+      <p>Our system turns dirty water into safe drinking water using only natural materials, the sun, and gravity.</p>
+    </div>
+    <div class="phases">
+      <div class="pc p1 fu">
+        <div class="pt">Phase 1 — Filter</div>
+        <h3>Remove Impurities</h3>
+        <p>Gravity pulls water through five layers of natural media, each catching different contaminants.</p>
+        <ol class="sl">
+          <li><div class="sd">1</div><div><strong>Small Stones</strong><small>Block debris, spread water evenly</small></div></li>
+          <li><div class="sd">2</div><div><strong>Gravel</strong><small>Trap medium sediment</small></div></li>
+          <li><div class="sd">3</div><div><strong>Charcoal</strong><small>Adsorb chemicals &amp; odors (3,000+ m²/g)</small></div></li>
+          <li><div class="sd">4</div><div><strong>Sand</strong><small>Catch fine particles</small></div></li>
+          <li><div class="sd">5</div><div><strong>Cotton</strong><small>Final polish — crystal-clear output</small></div></li>
+        </ol>
+      </div>
+      <div class="pc p2 fu">
+        <div class="pt">Phase 2 — Solar Pasteurize</div>
+        <h3>Kill Pathogens</h3>
+        <p>Filtered water goes into a half-black glass jar, capped with a glass lid, and set in the sun with a foil reflector. Dual kill: heat + UV.</p>
+        <ol class="sl">
+          <li><div class="sd">☀️</div><div><strong>Glass Lid Traps Heat</strong><small>Greenhouse effect heats water to 65°C+</small></div></li>
+          <li><div class="sd">🔬</div><div><strong>UV Passes Through Glass</strong><small>UV-A radiation damages pathogen DNA</small></div></li>
+          <li><div class="sd">📐</div><div><strong>Foil Reflector</strong><small>Bounces extra sunlight, heats faster</small></div></li>
+          <li><div class="sd">🕯️</div><div><strong>Wax Indicator</strong><small>Melts at 65°C = pasteurization confirmed</small></div></li>
+          <li><div class="sd">✓</div><div><strong>Safe to Drink</strong><small>Wait 30 min after wax melts, then enjoy</small></div></li>
+        </ol>
+      </div>
+    </div>
+    <div class="rb fu"><span class="big">💧 ✓</span>Safe drinking water — no electricity, no plastic, no chemicals.</div>
+  </div>
+</section>
+
+<section class="science" id="science">
+  <div class="container">
+    <div class="sh fu">
+      <span class="stag">The Science</span>
+      <h2>Why This Works</h2>
+      <p>Two proven disinfection methods working simultaneously inside one glass jar.</p>
+    </div>
+    <div class="dg">
+      <div class="dc dc1 fu">
+        <div class="di">🌡️</div>
+        <h3>Solar Pasteurization (Heat)</h3>
+        <p>The glass lid creates a greenhouse effect: sunlight enters, heats the water and black-painted surface, and the trapped hot air drives temperature past 65°C. At this temperature, E. coli, Salmonella, cholera, Giardia, and Cryptosporidium are killed within 6 minutes.</p>
+        <ul class="df">
+          <li>65°C for 6 minutes kills all common waterborne pathogens</li>
+          <li>Black paint maximizes solar heat absorption</li>
+          <li>Foil reflector boosts temperature by 10–20°C</li>
+          <li>Wax indicator confirms pasteurization temperature</li>
+        </ul>
+      </div>
+      <div class="dc dc2 fu">
+        <div class="di">🔬</div>
+        <h3>UV Disinfection (Light)</h3>
+        <p>UV-A radiation (320–400 nm) from sunlight passes through the clear half of the glass jar and directly damages pathogen DNA, preventing them from reproducing. This is the same principle behind the WHO-endorsed SODIS method. Your filter provides crystal-clear water, allowing UV to penetrate deeply.</p>
+        <ul class="df">
+          <li>UV-A damages pathogen DNA on contact</li>
+          <li>Clear glass transmits UV effectively</li>
+          <li>Pre-filtered water = deeper UV penetration</li>
+          <li>WHO-endorsed disinfection method (SODIS)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="impact" id="impact">
+  <div class="container">
+    <span class="stag">Our Impact</span>
+    <h2>Designed for the Desert</h2>
+    <p>Every component is chosen for Sonora's specific climate and community needs.</p>
+    <div class="ig">
+      <div class="ic2 fu"><div class="em">💧</div><h3>100%</h3><span>Natural Materials</span></div>
+      <div class="ic2 fu"><div class="em">⚡</div><h3>Zero</h3><span>Electricity</span></div>
+      <div class="ic2 fu"><div class="em">🚫</div><h3>Zero</h3><span>Plastic</span></div>
+      <div class="ic2 fu"><div class="em">☀️</div><h3>65°C+</h3><span>Dual-Kill Pasteurization</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="team" id="team">
+  <div class="container">
+    <div class="sh fu"><span class="stag">Our Team</span><h2>Built by Students, for Sonora</h2><p>We believe clean water is a right, not a luxury.</p></div>
+    <div class="tc fu">
+      <p>Sonliquid started as a school project and became a real mission. We studied water science, tested materials, and designed a 3-piece kit anyone can build with local resources. Our goal: safe drinking water for every drought-stricken community in Sonora.</p>
+      <div class="badge2"><div class="bi">🎓</div><div class="bt"><strong>Sonliquid Team</strong><span>Student Initiative • Sonora, Mexico</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="container">
+    <div class="cc fu">
+      <span class="stag">Get Involved</span>
+      <h2>Help Us Bring Clean Water to More Communities</h2>
+      <p>Donate materials, share our story, or help build kits. Every contribution counts.</p>
+      <div class="cb"><a href="mailto:contact@sonliquid.com" class="bs">Contact Us →</a><a href="#process" class="bg">See the Process</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="fg">
+      <div class="fb"><a href="#" class="logo"><div class="logo-ic">💧</div><span class="logo-tx">Sonliquid</span></a><p>Student-built water purification kits for Sonora. Natural filtration + solar glass jar pasteurization — all plastic-free.</p></div>
+      <div class="fc"><h5>Explore</h5><a href="#problem">The Problem</a><a href="#process">Process</a><a href="#science">Science</a><a href="#team">Team</a></div>
+      <div class="fc"><h5>Connect</h5><a href="mailto:contact@sonliquid.com">Email</a><a href="#contact">Get Involved</a><a href="#">Instagram</a></div>
+    </div>
+    <div class="fbot"><span>© 2025 Sonliquid</span><span>Made with 💧 in Sonora, Mexico</span></div>
+  </div>
+</footer>
+
+<script>
+const h=document.getElementById('header');
+window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>50));
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})});
+</script>
+</body>
+</html>
