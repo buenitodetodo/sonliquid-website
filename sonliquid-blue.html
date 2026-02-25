@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonliquid — Clean Water / Agua Limpia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --deep:#0b3d5c;--mid:#1a6fa0;--light:#4db8e8;--pale:#d4eef9;--ghost:#eef7fc;
+      --amber:#c88a2e;--amber-lt:#f5dfa8;--amber-dk:#8a6010;--amber-pale:#fdf8ed;
+      --white:#fff;--off:#f8f9fa;--text:#1a2a3a;--text2:#4a5a6a;
+      --green:#2d9f6f;--green-lt:#e6f5ee;
+      --warn:#e65100;--warn-bg:#fff3e0;
+      --r:12px;--rl:20px;--rx:40px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Outfit',sans-serif;color:var(--text);background:var(--white);line-height:1.6;overflow-x:hidden}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    section{padding:100px 0}
+    .stag{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mid);margin-bottom:16px}
+    .stag::before{content:'';width:32px;height:2px;background:var(--light);border-radius:2px}
+    h1,h2,h3,h4{font-family:'Source Serif 4',serif;line-height:1.2}
+
+    /* Language toggle */
+    .lang-toggle{position:fixed;top:20px;right:24px;z-index:1100;display:flex;background:rgba(255,255,255,.15);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:var(--rx);overflow:hidden;transition:background .4s,border .4s}
+    .scrolled~.lang-toggle,.lang-toggle.scrolled{background:var(--off);border-color:rgba(0,0,0,.08)}
+    .lang-btn{padding:8px 18px;font-size:.82rem;font-weight:600;cursor:pointer;border:none;background:transparent;color:rgba(255,255,255,.7);transition:.3s;font-family:'Outfit',sans-serif}
+    .lang-btn.active{background:var(--light);color:var(--white);border-radius:var(--rx)}
+    .scrolled~.lang-toggle .lang-btn,.lang-toggle.scrolled .lang-btn{color:var(--text2)}
+    .lang-toggle.scrolled .lang-btn.active{background:var(--mid);color:var(--white)}
+    [data-lang="es"]{display:none}
+    body.es [data-lang="es"]{display:block}
+    body.es [data-lang="en"]{display:none}
+    /* For inline elements */
+    body.es [data-lang-i="es"]{display:inline}
+    body.es [data-lang-i="en"]{display:none}
+    body:not(.es) [data-lang-i="es"]{display:none}
+    body:not(.es) [data-lang-i="en"]{display:inline}
+    /* For flex items */
+    body.es [data-lang-f="es"]{display:flex}
+    body.es [data-lang-f="en"]{display:none}
+    body:not(.es) [data-lang-f="es"]{display:none}
+    body:not(.es) [data-lang-f="en"]{display:flex}
+
+    header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 0;transition:.4s}
+    header.scrolled{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);box-shadow:0 2px 30px rgba(11,61,92,.08);padding:12px 0}
+    header .container{display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--white);transition:color .4s}
+    header.scrolled .logo{color:var(--deep)}
+    .logo-ic{width:40px;height:40px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+    .logo-tx{font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:700}
+    nav{display:flex;align-items:center;gap:28px}
+    nav a{text-decoration:none;color:rgba(255,255,255,.85);font-size:.9rem;font-weight:500;transition:color .3s}
+    header.scrolled nav a{color:var(--text2)}header.scrolled nav a:hover{color:var(--deep)}
+    .nav-cta{padding:10px 24px!important;background:var(--light);color:var(--white)!important;border-radius:var(--rx);font-weight:600!important}
+
+    .hero{min-height:100vh;display:flex;align-items:center;position:relative;background:linear-gradient(165deg,var(--deep) 0%,#0e4a6f 40%,var(--mid) 100%);overflow:hidden;padding-top:80px}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(77,184,232,.15) 0%,transparent 60%)}
+    .rp{position:absolute;border-radius:50%;border:1px solid rgba(77,184,232,.12);animation:rp 8s ease-out infinite}
+    .rp:nth-child(1){width:600px;height:600px;bottom:-200px;left:-100px}
+    .rp:nth-child(2){width:400px;height:400px;bottom:-100px;left:0;animation-delay:2s}
+    .rp:nth-child(3){width:500px;height:500px;top:-150px;right:-100px;animation-delay:4s}
+    @keyframes rp{0%{transform:scale(.8);opacity:0}50%{opacity:1}100%{transform:scale(1.6);opacity:0}}
+    .hero .container{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .hero-content h1{font-size:clamp(2.5rem,5vw,3.8rem);color:var(--white);margin-bottom:24px;line-height:1.1}
+    .hero-content h1 .hl{background:linear-gradient(135deg,var(--light),var(--amber-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-content>p{font-size:1.15rem;color:rgba(255,255,255,.8);max-width:500px;margin-bottom:40px;line-height:1.7}
+    .hb{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+    .hb span{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);padding:8px 16px;border-radius:var(--rx);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:.82rem;font-weight:500}
+    .ha{display:flex;gap:16px;flex-wrap:wrap}
+    .btn-p{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;background:var(--amber);color:var(--white);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,138,46,.4);background:var(--amber-dk)}
+    .btn-o{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border:2px solid rgba(255,255,255,.3);color:var(--white);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .btn-o:hover{border-color:var(--white);background:rgba(255,255,255,.1)}
+
+    .hero-visual{position:relative;display:flex;justify-content:center}
+    .kit-box{width:320px;background:rgba(255,255,255,.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:var(--rl);padding:28px;position:relative}
+    .kit-box h3{color:rgba(255,255,255,.6);font-size:.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-align:center;margin-bottom:20px;font-family:'Outfit',sans-serif}
+    .ki{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r);font-size:.85rem;font-weight:500;color:var(--white);margin-bottom:8px;transition:transform .3s}
+    .ki:hover{transform:translateX(4px)}
+    .ki .ic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .ki strong{display:block;font-size:.88rem}.ki small{font-size:.72rem;opacity:.6}
+    .ki1{background:rgba(77,184,232,.12)}.ki1 .ic{background:rgba(77,184,232,.2)}
+    .ki2{background:rgba(200,138,46,.15);border:1px solid rgba(200,138,46,.2)}.ki2 .ic{background:rgba(200,138,46,.25)}
+    .ki3{background:rgba(255,255,255,.08)}.ki3 .ic{background:rgba(255,255,255,.12)}
+    .kit-bdg{position:absolute;bottom:-16px;right:-16px;background:var(--white);padding:14px 18px;border-radius:var(--r);box-shadow:0 12px 40px rgba(0,0,0,.15);animation:fb 5s ease-in-out infinite}
+    .kit-bdg strong{display:block;font-size:1.3rem;color:var(--amber-dk);font-family:'Source Serif 4',serif}
+    .kit-bdg span{font-size:.7rem;color:var(--text2)}
+    @keyframes fb{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+    .problem{background:var(--white)}
+    .problem .container{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .problem h2{font-size:clamp(2rem,3.5vw,2.8rem);margin-bottom:24px;color:var(--deep)}
+    .problem p{color:var(--text2);font-size:1.05rem;line-height:1.8;margin-bottom:16px}
+    .sr{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+    .sb{text-align:center;padding:24px 12px;background:var(--ghost);border-radius:var(--r)}
+    .sb .n{font-family:'Source Serif 4',serif;font-size:2rem;font-weight:700;color:var(--deep)}
+    .sb .l{font-size:.78rem;color:var(--text2);margin-top:4px;font-weight:500}
+    .qc{background:linear-gradient(135deg,var(--deep),var(--mid));border-radius:var(--rl);padding:44px;color:var(--white);position:relative;overflow:hidden}
+    .qc::before{content:'"';position:absolute;top:-20px;left:20px;font-size:12rem;font-family:'Source Serif 4',serif;opacity:.08;line-height:1}
+    .qc blockquote{font-family:'Source Serif 4',serif;font-size:1.25rem;font-style:italic;line-height:1.6;margin-bottom:20px;position:relative;z-index:1}
+    .qc cite{font-style:normal;font-family:'Outfit',sans-serif;font-size:.85rem;opacity:.8}
+
+    .process{background:var(--ghost)}
+    .process .sh{text-align:center;max-width:650px;margin:0 auto 60px}
+    .process .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .process .sh p{color:var(--text2);font-size:1.05rem}
+    .phases{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px}
+    .pc{border-radius:var(--rl);padding:32px 24px}
+    .pc.p1{background:var(--white);border:2px solid var(--pale)}
+    .pc.p2{background:linear-gradient(145deg,var(--amber-pale),#fcecd5);border:2px solid var(--amber-lt)}
+    .pt{display:inline-block;padding:4px 14px;border-radius:var(--rx);font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+    .p1 .pt{background:var(--pale);color:var(--mid)}
+    .p2 .pt{background:var(--amber-lt);color:var(--amber-dk)}
+    .pc h3{font-size:1.2rem;margin-bottom:10px}.pc>p{color:var(--text2);font-size:.88rem;line-height:1.7;margin-bottom:18px}
+    .sl{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .sl li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.03);font-size:.84rem;color:var(--text);font-weight:500;transition:transform .2s}
+    .sl li:hover{transform:translateX(4px)}
+    .sl .sd{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;font-weight:700;color:var(--white)}
+    .p1 .sd{background:var(--mid)}.p2 .sd{background:var(--amber)}
+    .sl small{display:block;font-weight:400;font-size:.73rem;color:var(--text2)}
+    .rb{background:var(--green);color:var(--white);text-align:center;padding:24px;border-radius:var(--rl);font-weight:600}
+    .rb .big{font-size:1.5rem;display:block;margin-bottom:4px}
+
+    .science{background:var(--white)}
+    .science .sh{text-align:center;max-width:650px;margin:0 auto 60px}
+    .science .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .science .sh p{color:var(--text2);font-size:1.05rem}
+    .dg{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+    .dc{border-radius:var(--rl);padding:40px;border:1px solid rgba(0,0,0,.06)}
+    .dc.dc1{background:var(--ghost)}
+    .dc.dc2{background:var(--amber-pale)}
+    .dc .di{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:20px}
+    .dc1 .di{background:rgba(77,184,232,.12)}.dc2 .di{background:rgba(200,138,46,.12)}
+    .dc h3{font-size:1.3rem;margin-bottom:12px}.dc>p{color:var(--text2);font-size:.93rem;line-height:1.7;margin-bottom:16px}
+    .df{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .df li{display:flex;align-items:center;gap:8px;font-size:.87rem;color:var(--text);font-weight:500}
+    .df li::before{content:'✓';width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+    .dc1 .df li::before{background:rgba(77,184,232,.12);color:var(--mid)}
+    .dc2 .df li::before{background:rgba(200,138,46,.12);color:var(--amber)}
+
+    .materials{background:var(--off)}
+    .materials .sh{text-align:center;max-width:650px;margin:0 auto 60px}
+    .materials .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .materials .sh p{color:var(--text2);font-size:1.05rem}
+    .mg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .mc{background:var(--white);border-radius:var(--rl);padding:28px;border:1px solid rgba(0,0,0,.05);transition:transform .3s,box-shadow .3s}
+    .mc:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+    .mc .me{font-size:1.6rem;margin-bottom:12px}
+    .mc h4{font-size:1rem;margin-bottom:6px}
+    .mc p{font-size:.85rem;color:var(--text2);line-height:1.6}
+    .mc .ms{display:inline-block;margin-top:10px;font-size:.72rem;font-weight:600;padding:4px 12px;border-radius:var(--rx);background:var(--ghost);color:var(--mid)}
+
+    .impact{background:linear-gradient(165deg,var(--deep),#0e4a6f);color:var(--white);text-align:center}
+    .impact .stag{color:var(--light)}.impact .stag::before{background:var(--light)}
+    .impact h2{font-size:clamp(2rem,3.5vw,2.8rem);margin-bottom:16px}
+    .impact>.container>p{color:rgba(255,255,255,.75);max-width:600px;margin:0 auto 60px;font-size:1.05rem}
+    .ig{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    .ic2{padding:32px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--rl);backdrop-filter:blur(8px);transition:.3s}
+    .ic2:hover{background:rgba(255,255,255,.1);transform:translateY(-4px)}
+    .ic2 .em{font-size:1.8rem;margin-bottom:12px}.ic2 h3{font-size:1.8rem;margin-bottom:4px}.ic2 span{font-size:.8rem;color:rgba(255,255,255,.7);font-weight:500}
+
+    .about{background:var(--white)}
+    .about .sh{text-align:center;max-width:650px;margin:0 auto 60px}
+    .about .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .about .sh p{color:var(--text2);font-size:1.05rem}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+    .about-card{background:var(--ghost);border-radius:var(--rl);padding:36px;border:1px solid var(--pale)}
+    .about-card h3{font-size:1.2rem;margin-bottom:12px;color:var(--deep)}
+    .about-card p{font-size:.93rem;color:var(--text2);line-height:1.7;margin-bottom:12px}
+    .team-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .team-list li{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--text);font-weight:500}
+    .team-list li .ticon{width:32px;height:32px;border-radius:50%;background:var(--pale);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+    .thanks-tag{display:inline-block;padding:6px 14px;border-radius:var(--rx);font-size:.8rem;font-weight:500;background:var(--pale);color:var(--mid);margin:4px}
+
+    .contact{background:var(--ghost)}
+    .contact .sh{text-align:center;max-width:650px;margin:0 auto 60px}
+    .contact .sh h2{font-size:clamp(2rem,3.5vw,2.8rem);color:var(--deep);margin-bottom:16px}
+    .contact .sh p{color:var(--text2);font-size:1.05rem}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+    .contact-info{display:flex;flex-direction:column;gap:20px}
+    .ci{display:flex;align-items:flex-start;gap:14px;padding:20px;background:var(--white);border-radius:var(--r);border:1px solid rgba(0,0,0,.05)}
+    .ci .ci-ic{width:44px;height:44px;border-radius:50%;background:var(--pale);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+    .ci h4{font-size:.95rem;margin-bottom:4px}.ci p,.ci a{font-size:.88rem;color:var(--text2);text-decoration:none;line-height:1.5}
+    .ci a:hover{color:var(--mid)}
+    .map-box{border-radius:var(--rl);overflow:hidden;border:2px solid var(--pale);min-height:360px}
+    .map-box iframe{width:100%;height:100%;min-height:360px;border:0}
+
+    .cta{background:var(--white);text-align:center}
+    .cc{background:linear-gradient(135deg,var(--ghost),var(--white));border:2px solid var(--pale);border-radius:var(--rx);padding:80px 60px;max-width:800px;margin:0 auto}
+    .cc h2{font-size:clamp(1.8rem,3vw,2.4rem);color:var(--deep);margin-bottom:16px}
+    .cc p{color:var(--text2);font-size:1.05rem;max-width:500px;margin:0 auto 32px}
+    .cb{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .bs{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:var(--mid);color:var(--white);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .bs:hover{background:var(--deep);transform:translateY(-2px)}
+    .bg{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;border:2px solid var(--mid);color:var(--mid);text-decoration:none;border-radius:var(--rx);font-weight:600;transition:.3s}
+    .bg:hover{background:var(--mid);color:var(--white)}
+
+    footer{background:var(--deep);color:rgba(255,255,255,.7);padding:60px 0 32px}
+    .fg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:48px}
+    .fb .logo{color:var(--white);margin-bottom:16px}.fb p{font-size:.92rem;line-height:1.7;max-width:340px}
+    .fc h5{color:var(--white);font-size:.85rem;font-weight:600;margin-bottom:18px;letter-spacing:1px;text-transform:uppercase}
+    .fc a{display:block;color:rgba(255,255,255,.5);text-decoration:none;font-size:.88rem;padding:5px 0;transition:color .3s}.fc a:hover{color:var(--light)}
+    .fbot{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;font-size:.82rem}
+
+    .fu{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}.fu.v{opacity:1;transform:translateY(0)}
+
+    @media(max-width:1024px){.hero .container,.problem .container{grid-template-columns:1fr;text-align:center}.hero-content>p{margin:0 auto 40px}.hb,.ha{justify-content:center}.hero-visual{margin-top:40px}.phases,.dg,.about-grid,.contact-grid{grid-template-columns:1fr}.ig,.mg{grid-template-columns:repeat(2,1fr)}.fg{grid-template-columns:1fr;gap:32px}}
+    @media(max-width:768px){section{padding:70px 0}nav a:not(.nav-cta){display:none}.hero{min-height:auto;padding:120px 0 80px}.sr{gap:8px}.kit-box{width:100%;max-width:320px}.cc{padding:48px 24px}.fbot{flex-direction:column;gap:10px;text-align:center}.lang-toggle{top:auto;bottom:20px;right:50%;transform:translateX(50%)}}
+    @media(max-width:480px){.sr,.ig,.mg{grid-template-columns:1fr}.hb,.ha{flex-direction:column;align-items:center}}
+  </style>
+</head>
+<body>
+
+<div class="lang-toggle" id="langToggle">
+  <button class="lang-btn active" data-l="en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" data-l="es" onclick="setLang('es')">ES</button>
+</div>
+
+<header id="header">
+  <div class="container">
+    <a href="#" class="logo"><div class="logo-ic">💧</div><span class="logo-tx">Sonliquid</span></a>
+    <nav>
+      <a href="#problem"><span data-lang-i="en">The Problem</span><span data-lang-i="es">El Problema</span></a>
+      <a href="#process"><span data-lang-i="en">Process</span><span data-lang-i="es">Proceso</span></a>
+      <a href="#science"><span data-lang-i="en">Science</span><span data-lang-i="es">Ciencia</span></a>
+      <a href="#about"><span data-lang-i="en">About Us</span><span data-lang-i="es">Nosotros</span></a>
+      <a href="#contact" class="nav-cta"><span data-lang-i="en">Contact</span><span data-lang-i="es">Contacto</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="hero">
+  <div class="rp"></div><div class="rp"></div><div class="rp"></div>
+  <div class="container">
+    <div class="hero-content">
+      <!-- EN -->
+      <div data-lang="en">
+        <div class="hb"><span>🎓 Student-Led</span><span>🌵 Made in Sonora</span><span>🚫 Zero Plastic</span></div>
+        <h1>Clean Water from <span class="hl">Sunlight</span></h1>
+        <p>Sonliquid is a student-built water purification kit for Sonora's drought zones. Natural filtration and solar pasteurization in a glass jar — simple, plastic-free, and powered by the sun.</p>
+        <div class="ha">
+          <a href="#process" class="btn-p">See Our Process ↓</a>
+          <a href="#contact" class="btn-o">Support Us</a>
+        </div>
+      </div>
+      <!-- ES -->
+      <div data-lang="es">
+        <div class="hb"><span>🎓 Hecho por Estudiantes</span><span>🌵 Hecho en Sonora</span><span>🚫 Cero Plástico</span></div>
+        <h1>Agua Limpia con <span class="hl">Luz Solar</span></h1>
+        <p>Sonliquid es un kit de purificación de agua creado por estudiantes para las zonas de sequía de Sonora. Filtración natural y pasteurización solar en un frasco de vidrio — simple, sin plástico, y con energía del sol.</p>
+        <div class="ha">
+          <a href="#process" class="btn-p">Ver el Proceso ↓</a>
+          <a href="#contact" class="btn-o">Apóyanos</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="kit-box">
+        <!-- EN -->
+        <div data-lang="en">
+          <h3>The Sonliquid Kit</h3>
+          <div class="ki ki1"><div class="ic">🪨</div><div><strong>Natural Filter Unit</strong><small>Stones · Gravel · Charcoal · Sand · Cotton</small></div></div>
+          <div class="ki ki2"><div class="ic">🫙</div><div><strong>Glass Jar + Mirror</strong><small>Solar heat + UV dual disinfection</small></div></div>
+          <div class="ki ki3"><div class="ic">📋</div><div><strong>Instruction Card</strong><small>Visual step-by-step guide</small></div></div>
+        </div>
+        <!-- ES -->
+        <div data-lang="es">
+          <h3>El Kit Sonliquid</h3>
+          <div class="ki ki1"><div class="ic">🪨</div><div><strong>Filtro Natural</strong><small>Piedras · Grava · Carbón · Arena · Algodón</small></div></div>
+          <div class="ki ki2"><div class="ic">🫙</div><div><strong>Frasco de Vidrio + Espejo</strong><small>Calor solar + desinfección UV</small></div></div>
+          <div class="ki ki3"><div class="ic">📋</div><div><strong>Tarjeta de Instrucciones</strong><small>Guía visual paso a paso</small></div></div>
+        </div>
+        <div class="kit-bdg">
+          <strong>3 <span data-lang-i="en">Pieces</span><span data-lang-i="es">Piezas</span></strong>
+          <span data-lang-i="en">Complete System</span><span data-lang-i="es">Sistema Completo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROBLEM ==================== -->
+<section class="problem" id="problem">
+  <div class="container">
+    <!-- EN -->
+    <div class="fu" data-lang="en">
+      <span class="stag">The Problem</span>
+      <h2>Sonora Is Running Out of Clean Water</h2>
+      <p>Sonora is one of Mexico's driest states. Rural communities lack reliable access to safe drinking water. Drought worsens every year, and infrastructure is too expensive to reach everyone.</p>
+      <p>We needed a solution that's affordable, requires no electricity, and uses local materials. So we created one.</p>
+      <div class="sr">
+        <div class="sb"><div class="n">72</div><div class="l">Municipalities</div></div>
+        <div class="sb"><div class="n">40%</div><div class="l">Water Scarcity</div></div>
+        <div class="sb"><div class="n">45°C</div><div class="l">Summer Heat</div></div>
+      </div>
+    </div>
+    <div class="fu" data-lang="es">
+      <span class="stag">El Problema</span>
+      <h2>Sonora Se Está Quedando Sin Agua Limpia</h2>
+      <p>Sonora es uno de los estados más secos de México. Las comunidades rurales no tienen acceso confiable a agua potable. La sequía empeora cada año, y la infraestructura es demasiado cara para llegar a todos.</p>
+      <p>Necesitábamos una solución económica, sin electricidad, y con materiales locales. Así que la creamos.</p>
+      <div class="sr">
+        <div class="sb"><div class="n">72</div><div class="l">Municipios</div></div>
+        <div class="sb"><div class="n">40%</div><div class="l">Escasez de Agua</div></div>
+        <div class="sb"><div class="n">45°C</div><div class="l">Calor en Verano</div></div>
+      </div>
+    </div>
+    <div class="fu">
+      <div class="qc">
+        <!-- EN -->
+        <div data-lang="en">
+          <blockquote>The desert gives us scorching heat and scarce water — but we realized we could use one to fix the other.</blockquote>
+          <cite>— The Sonliquid Team</cite>
+        </div>
+        <!-- ES -->
+        <div data-lang="es">
+          <blockquote>El desierto nos da calor extremo y poca agua — pero nos dimos cuenta de que podemos usar uno para arreglar el otro.</blockquote>
+          <cite>— El Equipo Sonliquid</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROCESS ==================== -->
+<section class="process" id="process">
+  <div class="container">
+    <!-- EN -->
+    <div data-lang="en">
+      <div class="sh fu">
+        <span class="stag">The Process</span>
+        <h2>Two Phases: Filter, Then Pasteurize</h2>
+        <p>Our system turns dirty water into safe drinking water using only natural materials, the sun, and a mirror.</p>
+      </div>
+      <div class="phases">
+        <div class="pc p1 fu">
+          <div class="pt">Phase 1 — Filter</div>
+          <h3>Remove Impurities</h3>
+          <p>Gravity pulls water through five layers of natural media, each catching different contaminants.</p>
+          <ol class="sl">
+            <li><div class="sd">1</div><div><strong>Small Stones</strong><small>Block debris, spread water evenly</small></div></li>
+            <li><div class="sd">2</div><div><strong>Gravel</strong><small>Trap medium sediment</small></div></li>
+            <li><div class="sd">3</div><div><strong>Charcoal</strong><small>Adsorb chemicals & odors (3,000+ m²/g)</small></div></li>
+            <li><div class="sd">4</div><div><strong>Sand</strong><small>Catch fine particles</small></div></li>
+            <li><div class="sd">5</div><div><strong>Cotton</strong><small>Final polish — crystal-clear output</small></div></li>
+          </ol>
+        </div>
+        <div class="pc p2 fu">
+          <div class="pt">Phase 2 — Solar Pasteurize</div>
+          <h3>Kill Pathogens</h3>
+          <p>Filtered water goes into a half-black glass jar, placed in the sun with a mirror behind it. Dual kill: heat + UV.</p>
+          <ol class="sl">
+            <li><div class="sd">☀️</div><div><strong>Glass Lid Traps Heat</strong><small>Greenhouse effect heats water to 65°C+</small></div></li>
+            <li><div class="sd">🔬</div><div><strong>UV Passes Through Glass</strong><small>UV-A radiation damages pathogen DNA</small></div></li>
+            <li><div class="sd">🪞</div><div><strong>Mirror Reflector</strong><small>Reflects 95% of sunlight onto the jar</small></div></li>
+            <li><div class="sd">🕯️</div><div><strong>Wax Indicator</strong><small>Melts at 65°C = pasteurization confirmed</small></div></li>
+            <li><div class="sd">✓</div><div><strong>Safe to Drink</strong><small>Wait 30 min after wax melts, then enjoy</small></div></li>
+          </ol>
+        </div>
+      </div>
+      <div class="rb fu"><span class="big">💧 ✓</span>Safe drinking water — no electricity, no plastic, no chemicals.</div>
+    </div>
+    <!-- ES -->
+    <div data-lang="es">
+      <div class="sh fu">
+        <span class="stag">El Proceso</span>
+        <h2>Dos Fases: Filtrar y Pasteurizar</h2>
+        <p>Nuestro sistema convierte agua sucia en agua potable usando solo materiales naturales, el sol, y un espejo.</p>
+      </div>
+      <div class="phases">
+        <div class="pc p1 fu">
+          <div class="pt">Fase 1 — Filtrar</div>
+          <h3>Quitar Impurezas</h3>
+          <p>La gravedad jala el agua a través de cinco capas de materiales naturales, cada una atrapa diferentes contaminantes.</p>
+          <ol class="sl">
+            <li><div class="sd">1</div><div><strong>Piedras</strong><small>Bloquean basura, distribuyen el agua</small></div></li>
+            <li><div class="sd">2</div><div><strong>Grava</strong><small>Atrapa partículas medianas</small></div></li>
+            <li><div class="sd">3</div><div><strong>Carbón</strong><small>Absorbe químicos y olores (3,000+ m²/g)</small></div></li>
+            <li><div class="sd">4</div><div><strong>Arena</strong><small>Atrapa partículas finas</small></div></li>
+            <li><div class="sd">5</div><div><strong>Algodón</strong><small>Pulido final — agua cristalina</small></div></li>
+          </ol>
+        </div>
+        <div class="pc p2 fu">
+          <div class="pt">Fase 2 — Pasteurizar con el Sol</div>
+          <h3>Matar Bacterias</h3>
+          <p>El agua filtrada va a un frasco de vidrio pintado de negro por la mitad, puesto al sol con un espejo detrás. Doble efecto: calor + UV.</p>
+          <ol class="sl">
+            <li><div class="sd">☀️</div><div><strong>La Tapa de Vidrio Atrapa Calor</strong><small>Efecto invernadero calienta el agua a 65°C+</small></div></li>
+            <li><div class="sd">🔬</div><div><strong>Los Rayos UV Pasan por el Vidrio</strong><small>La radiación UV-A daña el ADN de las bacterias</small></div></li>
+            <li><div class="sd">🪞</div><div><strong>Espejo Reflector</strong><small>Refleja el 95% de la luz solar hacia el frasco</small></div></li>
+            <li><div class="sd">🕯️</div><div><strong>Indicador de Cera</strong><small>Se derrite a 65°C = pasteurización confirmada</small></div></li>
+            <li><div class="sd">✓</div><div><strong>Lista para Tomar</strong><small>Esperar 30 min después de que se derrita la cera</small></div></li>
+          </ol>
+        </div>
+      </div>
+      <div class="rb fu"><span class="big">💧 ✓</span>Agua potable — sin electricidad, sin plástico, sin químicos.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SCIENCE ==================== -->
+<section class="science" id="science">
+  <div class="container">
+    <!-- EN -->
+    <div data-lang="en">
+      <div class="sh fu">
+        <span class="stag">The Science</span>
+        <h2>Why This Works</h2>
+        <p>Two proven disinfection methods working simultaneously inside one glass jar.</p>
+      </div>
+      <div class="dg">
+        <div class="dc dc1 fu">
+          <div class="di">🌡️</div>
+          <h3>Solar Pasteurization (Heat)</h3>
+          <p>The glass lid creates a greenhouse effect. Sunlight enters, heats the water and the black-painted surface, and the trapped hot air pushes temperature past 65°C. A flat mirror behind the jar reflects 95% of sunlight — much more efficient than aluminum foil (~85%). At 65°C, E. coli, Salmonella, cholera, Giardia, and Cryptosporidium are killed within 6 minutes.</p>
+          <ul class="df">
+            <li>65°C for 6 minutes kills all common waterborne pathogens</li>
+            <li>Black paint maximizes solar heat absorption</li>
+            <li>Mirror reflects 95% of sunlight (vs 85% for foil)</li>
+            <li>Wax indicator confirms pasteurization temperature</li>
+          </ul>
+        </div>
+        <div class="dc dc2 fu">
+          <div class="di">🔬</div>
+          <h3>UV Disinfection (Light)</h3>
+          <p>UV-A radiation (320–400 nm) from sunlight passes through the clear half of the glass jar and directly damages pathogen DNA, preventing them from reproducing. This is the same principle behind the WHO-endorsed SODIS method. Your filter provides crystal-clear water, allowing UV to penetrate deeply.</p>
+          <ul class="df">
+            <li>UV-A damages pathogen DNA on contact</li>
+            <li>Clear glass transmits UV effectively</li>
+            <li>Pre-filtered water = deeper UV penetration</li>
+            <li>WHO-endorsed disinfection method (SODIS)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- ES -->
+    <div data-lang="es">
+      <div class="sh fu">
+        <span class="stag">La Ciencia</span>
+        <h2>Por Qué Funciona</h2>
+        <p>Dos métodos de desinfección comprobados trabajando al mismo tiempo dentro de un frasco de vidrio.</p>
+      </div>
+      <div class="dg">
+        <div class="dc dc1 fu">
+          <div class="di">🌡️</div>
+          <h3>Pasteurización Solar (Calor)</h3>
+          <p>La tapa de vidrio crea un efecto invernadero. La luz del sol entra, calienta el agua y la superficie negra, y el aire caliente atrapado sube la temperatura a más de 65°C. Un espejo plano detrás del frasco refleja el 95% de la luz solar — mucho más eficiente que el papel aluminio (~85%). A 65°C, E. coli, Salmonella, cólera, Giardia y Cryptosporidium mueren en 6 minutos.</p>
+          <ul class="df">
+            <li>65°C por 6 minutos mata todas las bacterias comunes</li>
+            <li>La pintura negra maximiza la absorción de calor</li>
+            <li>El espejo refleja el 95% de la luz (vs 85% del aluminio)</li>
+            <li>El indicador de cera confirma la temperatura</li>
+          </ul>
+        </div>
+        <div class="dc dc2 fu">
+          <div class="di">🔬</div>
+          <h3>Desinfección UV (Luz)</h3>
+          <p>La radiación UV-A (320–400 nm) del sol pasa a través de la mitad clara del frasco y daña directamente el ADN de las bacterias, impidiendo que se reproduzcan. Este es el mismo principio del método SODIS, respaldado por la OMS. El filtro proporciona agua cristalina, permitiendo que los rayos UV penetren profundamente.</p>
+          <ul class="df">
+            <li>Los rayos UV-A dañan el ADN de las bacterias al contacto</li>
+            <li>El vidrio claro transmite los UV eficientemente</li>
+            <li>El agua pre-filtrada = mayor penetración UV</li>
+            <li>Método de desinfección respaldado por la OMS (SODIS)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MATERIALS ==================== -->
+<section class="materials" id="materials">
+  <div class="container">
+    <!-- EN -->
+    <div data-lang="en">
+      <div class="sh fu">
+        <span class="stag">Materials</span>
+        <h2>Everything You Need</h2>
+        <p>All materials are available locally — most come from nature, the rest from any store.</p>
+      </div>
+      <div class="mg">
+        <div class="mc fu"><div class="me">🪨</div><h4>Stones & Gravel</h4><p>River stones (2–3 cm) and gravel (0.5–1 cm). Wash before use.</p><span class="ms">From rivers</span></div>
+        <div class="mc fu"><div class="me">🔥</div><h4>Charcoal</h4><p>Wood or coconut shell charcoal, crushed. NOT briquettes — they have chemical binders.</p><span class="ms">Charcoal vendors</span></div>
+        <div class="mc fu"><div class="me">🏖️</div><h4>Sand</h4><p>Clean fine river or construction sand. Not beach sand (contains salt).</p><span class="ms">Hardware stores</span></div>
+        <div class="mc fu"><div class="me">🧶</div><h4>Cotton</h4><p>Raw cotton, cotton cloth, or clean unbleached fabric.</p><span class="ms">Fabric stores</span></div>
+        <div class="mc fu"><div class="me">🫙</div><h4>Glass Jar</h4><p>Clear glass jar with lid, 1–2 liters. Mason jar or reused conserva jar works.</p><span class="ms">Reused from home</span></div>
+        <div class="mc fu"><div class="me">🎨</div><h4>Black Paint</h4><p>Matte heat-resistant black paint. Only on the OUTSIDE, one half of the jar.</p><span class="ms">Hardware store</span></div>
+        <div class="mc fu"><div class="me">🪞</div><h4>Flat Mirror</h4><p>Any flat mirror — bathroom, makeup, or closet mirror. Reflects 95% of sunlight. Bigger = better.</p><span class="ms">Store or reused</span></div>
+        <div class="mc fu"><div class="me">🕯️</div><h4>Soy Wax</h4><p>Small piece of soy wax or paraffin. Melts at ~65°C to confirm pasteurization.</p><span class="ms">Craft / candle shops</span></div>
+        <div class="mc fu"><div class="me">📋</div><h4>Instruction Card</h4><p>Thick cardboard with visual illustrations of the process.</p><span class="ms">Stationery store</span></div>
+      </div>
+    </div>
+    <!-- ES -->
+    <div data-lang="es">
+      <div class="sh fu">
+        <span class="stag">Materiales</span>
+        <h2>Todo Lo Que Necesitas</h2>
+        <p>Todos los materiales se consiguen localmente — la mayoría vienen de la naturaleza, el resto de cualquier tienda.</p>
+      </div>
+      <div class="mg">
+        <div class="mc fu"><div class="me">🪨</div><h4>Piedras y Grava</h4><p>Piedras de río (2–3 cm) y grava (0.5–1 cm). Lavar antes de usar.</p><span class="ms">De ríos</span></div>
+        <div class="mc fu"><div class="me">🔥</div><h4>Carbón</h4><p>Carbón de madera o coco, machacado. NO briquetas — tienen químicos.</p><span class="ms">Vendedores de carbón</span></div>
+        <div class="mc fu"><div class="me">🏖️</div><h4>Arena</h4><p>Arena fina de río o de construcción. No arena de playa (tiene sal).</p><span class="ms">Ferreterías</span></div>
+        <div class="mc fu"><div class="me">🧶</div><h4>Algodón</h4><p>Algodón crudo, tela de algodón, o tela limpia sin blanquear.</p><span class="ms">Tiendas de tela</span></div>
+        <div class="mc fu"><div class="me">🫙</div><h4>Frasco de Vidrio</h4><p>Frasco de vidrio con tapa, 1–2 litros. Frasco de conserva reutilizado funciona.</p><span class="ms">Reutilizado de casa</span></div>
+        <div class="mc fu"><div class="me">🎨</div><h4>Pintura Negra</h4><p>Pintura negra mate resistente al calor. Solo POR FUERA, en la mitad del frasco.</p><span class="ms">Ferretería</span></div>
+        <div class="mc fu"><div class="me">🪞</div><h4>Espejo Plano</h4><p>Cualquier espejo plano — de baño, de maquillaje, o de clóset. Refleja 95% de la luz. Más grande = mejor.</p><span class="ms">Tienda o reutilizado</span></div>
+        <div class="mc fu"><div class="me">🕯️</div><h4>Cera de Soya</h4><p>Pedazo pequeño de cera de soya o parafina. Se derrite a ~65°C para confirmar la pasteurización.</p><span class="ms">Tiendas de manualidades</span></div>
+        <div class="mc fu"><div class="me">📋</div><h4>Tarjeta de Instrucciones</h4><p>Cartón grueso con ilustraciones visuales del proceso.</p><span class="ms">Papelería</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== IMPACT ==================== -->
+<section class="impact" id="impact">
+  <div class="container">
+    <!-- EN -->
+    <div data-lang="en">
+      <span class="stag">Our Impact</span>
+      <h2>Designed for the Desert</h2>
+      <p>Every component is chosen for Sonora's specific climate and community needs.</p>
+      <div class="ig">
+        <div class="ic2 fu"><div class="em">💧</div><h3>100%</h3><span>Natural Materials</span></div>
+        <div class="ic2 fu"><div class="em">⚡</div><h3>Zero</h3><span>Electricity</span></div>
+        <div class="ic2 fu"><div class="em">🚫</div><h3>Zero</h3><span>Plastic</span></div>
+        <div class="ic2 fu"><div class="em">🪞</div><h3>95%</h3><span>Mirror Reflectivity</span></div>
+      </div>
+    </div>
+    <!-- ES -->
+    <div data-lang="es">
+      <span class="stag">Nuestro Impacto</span>
+      <h2>Diseñado Para el Desierto</h2>
+      <p>Cada componente está elegido para el clima y las necesidades de Sonora.</p>
+      <div class="ig">
+        <div class="ic2 fu"><div class="em">💧</div><h3>100%</h3><span>Materiales Naturales</span></div>
+        <div class="ic2 fu"><div class="em">⚡</div><h3>Cero</h3><span>Electricidad</span></div>
+        <div class="ic2 fu"><div class="em">🚫</div><h3>Cero</h3><span>Plástico</span></div>
+        <div class="ic2 fu"><div class="em">🪞</div><h3>95%</h3><span>Reflectividad del Espejo</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ABOUT US ==================== -->
+<section class="about" id="about">
+  <div class="container">
+    <!-- EN -->
+    <div data-lang="en">
+      <div class="sh fu">
+        <span class="stag">About Us</span>
+        <h2>Who We Are</h2>
+        <p>A team of students from Hermosillo, Sonora who believe clean water shouldn't depend on money or electricity.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card fu">
+          <h3>Our Mission</h3>
+          <p>Sonliquid started as a school project and became a real mission. We studied water science, tested materials, and designed a 3-piece kit anyone can build with local resources.</p>
+          <p>Our goal: safe drinking water for every drought-stricken community in Sonora — using only the sun, natural materials, and a mirror.</p>
+          <h3 style="margin-top:20px">The Team</h3>
+          <ul class="team-list">
+            <li><div class="ticon">🎓</div>Sonliquid Team — HighPoint International School, Hermosillo</li>
+          </ul>
+        </div>
+        <div class="about-card fu">
+          <h3>Acknowledgments</h3>
+          <p>We want to thank everyone who helped make this project possible:</p>
+          <div style="margin-top:12px">
+            <span class="thanks-tag">HighPoint International School</span>
+            <span class="thanks-tag">Our Teachers & Advisors</span>
+            <span class="thanks-tag">Local Artisans of Sonora</span>
+            <span class="thanks-tag">Our Families</span>
+            <span class="thanks-tag">Hermosillo Community</span>
+          </div>
+          <p style="margin-top:20px;font-style:italic;font-size:.88rem">"The desert taught us that scarcity breeds creativity. Sonora's sun is both our biggest problem and our greatest solution."</p>
+        </div>
+      </div>
+    </div>
+    <!-- ES -->
+    <div data-lang="es">
+      <div class="sh fu">
+        <span class="stag">Nosotros</span>
+        <h2>Quiénes Somos</h2>
+        <p>Un equipo de estudiantes de Hermosillo, Sonora que cree que el agua limpia no debería depender del dinero ni la electricidad.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card fu">
+          <h3>Nuestra Misión</h3>
+          <p>Sonliquid empezó como un proyecto escolar y se convirtió en una misión real. Estudiamos la ciencia del agua, probamos materiales, y diseñamos un kit de 3 piezas que cualquiera puede construir con recursos locales.</p>
+          <p>Nuestro objetivo: agua potable para cada comunidad afectada por la sequía en Sonora — usando solo el sol, materiales naturales, y un espejo.</p>
+          <h3 style="margin-top:20px">El Equipo</h3>
+          <ul class="team-list">
+            <li><div class="ticon">🎓</div>Equipo Sonliquid — HighPoint International School, Hermosillo</li>
+          </ul>
+        </div>
+        <div class="about-card fu">
+          <h3>Agradecimientos</h3>
+          <p>Queremos agradecer a todos los que hicieron posible este proyecto:</p>
+          <div style="margin-top:12px">
+            <span class="thanks-tag">HighPoint International School</span>
+            <span class="thanks-tag">Nuestros Maestros y Asesores</span>
+            <span class="thanks-tag">Artesanos Locales de Sonora</span>
+            <span class="thanks-tag">Nuestras Familias</span>
+            <span class="thanks-tag">Comunidad de Hermosillo</span>
+          </div>
+          <p style="margin-top:20px;font-style:italic;font-size:.88rem">"El desierto nos enseñó que la escasez genera creatividad. El sol de Sonora es nuestro mayor problema y nuestra mejor solución."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section class="contact" id="contact">
+  <div class="container">
+    <!-- EN -->
+    <div data-lang="en">
+      <div class="sh fu">
+        <span class="stag">Contact</span>
+        <h2>Get in Touch</h2>
+        <p>Want to help, ask questions, or build your own kit? Reach out to us.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info fu">
+          <div class="ci">
+            <div class="ci-ic">📍</div>
+            <div><h4>Address</h4><p>HighPoint International School<br>Hermosillo, Sonora, Mexico</p></div>
+          </div>
+          <div class="ci">
+            <div class="ci-ic">📧</div>
+            <div><h4>Email</h4><a href="mailto:contact@sonliquid.com">contact@sonliquid.com</a></div>
+          </div>
+          <div class="ci">
+            <div class="ci-ic">📱</div>
+            <div><h4>Phone</h4><a href="tel:+526621234567">+52 662 123 4567</a></div>
+          </div>
+          <div class="ci">
+            <div class="ci-ic">📷</div>
+            <div><h4>Social Media</h4><a href="#">@sonliquid</a></div>
+          </div>
+        </div>
+        <div class="map-box fu">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55897.23!2d-110.97!3d29.07!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ce8443784c4f4b%3A0xd0ba52cdb6ad7090!2sHermosillo%2C%20Son.%2C%20Mexico!5e0!3m2!1sen!2sus!4v1700000000000" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <!-- ES -->
+    <div data-lang="es">
+      <div class="sh fu">
+        <span class="stag">Contacto</span>
+        <h2>Contáctanos</h2>
+        <p>¿Quieres ayudar, hacer preguntas, o construir tu propio kit? Escríbenos.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info fu">
+          <div class="ci">
+            <div class="ci-ic">📍</div>
+            <div><h4>Dirección</h4><p>HighPoint International School<br>Hermosillo, Sonora, México</p></div>
+          </div>
+          <div class="ci">
+            <div class="ci-ic">📧</div>
+            <div><h4>Correo</h4><a href="mailto:contact@sonliquid.com">contact@sonliquid.com</a></div>
+          </div>
+          <div class="ci">
+            <div class="ci-ic">📱</div>
+            <div><h4>Teléfono</h4><a href="tel:+526621234567">+52 662 123 4567</a></div>
+          </div>
+          <div class="ci">
+            <div class="ci-ic">📷</div>
+            <div><h4>Redes Sociales</h4><a href="#">@sonliquid</a></div>
+          </div>
+        </div>
+        <div class="map-box fu">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55897.23!2d-110.97!3d29.07!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ce8443784c4f4b%3A0xd0ba52cdb6ad7090!2sHermosillo%2C%20Son.%2C%20Mexico!5e0!3m2!1ses!2smx!4v1700000000000" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta" id="cta">
+  <div class="container">
+    <div class="cc fu">
+      <!-- EN -->
+      <div data-lang="en">
+        <span class="stag">Get Involved</span>
+        <h2>Help Us Bring Clean Water to More Communities</h2>
+        <p>Donate materials, share our story, or help build kits. Every contribution counts.</p>
+        <div class="cb"><a href="mailto:contact@sonliquid.com" class="bs">Contact Us →</a><a href="#process" class="bg">See the Process</a></div>
+      </div>
+      <!-- ES -->
+      <div data-lang="es">
+        <span class="stag">Participa</span>
+        <h2>Ayúdanos a Llevar Agua Limpia a Más Comunidades</h2>
+        <p>Dona materiales, comparte nuestra historia, o ayuda a construir kits. Cada contribución cuenta.</p>
+        <div class="cb"><a href="mailto:contact@sonliquid.com" class="bs">Contáctanos →</a><a href="#process" class="bg">Ver el Proceso</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="container">
+    <div class="fg">
+      <div class="fb">
+        <a href="#" class="logo"><div class="logo-ic">💧</div><span class="logo-tx">Sonliquid</span></a>
+        <!-- EN -->
+        <p data-lang="en">Student-built water purification kits for Sonora. Natural filtration + solar glass jar pasteurization with mirror reflector — all plastic-free.</p>
+        <!-- ES -->
+        <p data-lang="es">Kits de purificación de agua hechos por estudiantes para Sonora. Filtración natural + pasteurización solar con frasco de vidrio y espejo — sin plástico.</p>
+      </div>
+      <div class="fc">
+        <h5 data-lang="en">Explore</h5><h5 data-lang="es">Explorar</h5>
+        <a href="#problem"><span data-lang-i="en">The Problem</span><span data-lang-i="es">El Problema</span></a>
+        <a href="#process"><span data-lang-i="en">Process</span><span data-lang-i="es">Proceso</span></a>
+        <a href="#science"><span data-lang-i="en">Science</span><span data-lang-i="es">Ciencia</span></a>
+        <a href="#about"><span data-lang-i="en">About Us</span><span data-lang-i="es">Nosotros</span></a>
+      </div>
+      <div class="fc">
+        <h5 data-lang="en">Connect</h5><h5 data-lang="es">Conectar</h5>
+        <a href="mailto:contact@sonliquid.com">Email</a>
+        <a href="#contact"><span data-lang-i="en">Contact</span><span data-lang-i="es">Contacto</span></a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <div class="fbot">
+      <span>© 2025 Sonliquid. <span data-lang-i="en">All rights reserved.</span><span data-lang-i="es">Todos los derechos reservados.</span></span>
+      <span data-lang-i="en">Made with 💧 in Sonora, Mexico</span>
+      <span data-lang-i="es">Hecho con 💧 en Sonora, México</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function setLang(lang) {
+  if (lang === 'es') document.body.classList.add('es');
+  else document.body.classList.remove('es');
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.l === lang));
+  localStorage.setItem('sl-lang', lang);
+}
+
+// Header scroll
+const h = document.getElementById('header');
+const lt = document.getElementById('langToggle');
+window.addEventListener('scroll', () => {
+  const s = window.scrollY > 50;
+  h.classList.toggle('scrolled', s);
+  lt.classList.toggle('scrolled', s);
+});
+
+// Scroll animations
+const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) x.target.classList.add('v') }) }, { threshold: .1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
+  });
+});
+
+// Restore lang preference
+const saved = localStorage.getItem('sl-lang');
+if (saved) setLang(saved);
+</script>
+</body>
+</html>
